@@ -14,8 +14,7 @@ class App extends Component {
             <h1 className="App-title">Welcome to Chat Bot Report</h1>
           </header>
           <Route exact path="/" component={Data} />
-          {/* <Route exact path="/:category" component={Detail} /> */}
-          <Route exact path="/category" component={Detail} />
+          <Route exact path="/:path" component={Detail} />
           <p className="App-intro">
             
           </p>

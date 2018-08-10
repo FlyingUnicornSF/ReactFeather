@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import Highcharts from 'highcharts';
 import "./Data.css";
+import { Redirect } from 'react-router'
 
 class Data extends Component {
   constructor(props){
     super(props);
     this.state = {
       categories: [],
-      counts: []
+      counts: [],
+      redirect: false,
+      path: null
     }
   }
   componentDidUpdate(prevState){
     if (this.state.categories !== prevState.categories) {
-      console.log("componentDidUpdate", this.state.categories)
+      console.log("componentDidUpdate")
       this.chart();
     }
   }
@@ -36,7 +39,7 @@ class Data extends Component {
     let categoriesArray = [];
     let counts = [];
     let dataMap = new Map();
-    console.log("json", data)
+    // console.log("json", data)
     for(let i = 0; i < data.length; i++){
       if(dataMap.has(data[i].Category)){
         let newValue = dataMap.get(data[i].Category)+1;
@@ -45,7 +48,7 @@ class Data extends Component {
         dataMap.set(data[i].Category, 1) 
       }
     }
-    console.log("dataMap", dataMap)
+    // console.log("dataMap", dataMap)
     // TODO(me): sort the data from large to small
     dataMap.forEach((value, key)=>{
       categoriesArray.push(key);
@@ -55,11 +58,10 @@ class Data extends Component {
       categories: categoriesArray,
       counts: counts
     });
-    console.log(Array.isArray(this.state.categories))
   }
 
   chart(){
-      Highcharts.chart('container', {
+      Highcharts.chart('bar-chart', {
         chart: {
           type: 'bar'
         },
@@ -74,7 +76,7 @@ class Data extends Component {
           labels: {
             style: {
               cursor: 'pointer',
-              fontSize: '17px'
+              fontSize: '10px'
             }
           }
         },
@@ -102,28 +104,34 @@ class Data extends Component {
 
   handleClick(e){
     // access to e.target here
-    console.log("e.target", e.target.innerHTML);
-    // this.setState({prescriptionID: e.target.id})
-    // // this is another way to XMLHttpRequest
-    // // using fetch
-    // let url = "/fills/"+e.target.id;
-    // fetch(url, {
-    //   method: "GET",
-    // })
-    // // below line is needed because fetch is a promise
-    // // if you don't return response, it will hang waiting...
-    // .then(response => response.json())
-    // .then(response => this.setState({fills: response}))
-    // .then(this.setState({show: true}))
+    let path = e.target.innerHTML;
+    path = path.replace("&amp;","%26");
+    console.log("path", path);
+    this.setState({
+      redirect: true,
+      path: path
+    });
   }
-
-
+  
+  Routing(){
+    console.log("path", this.state.path)
+    if(this.state.redirect === true){
+      return(
+        (<Redirect
+            to={{
+            pathname: "/" + this.state.path
+          }} />)
+      )
+    }
+  }
+  
   render(){
     console.log("render")
     return(
       <div>
       {/* {JSON.stringify(this.state.categories)}{JSON.stringify(this.state.counts)} */}
-      <div id="container" onClick={(e) => this.handleClick(e)}></div>
+      <div id="bar-chart" onClick={(e) => this.handleClick(e)}></div>
+      <div>{this.Routing()}</div>
       </div>
     )
   }

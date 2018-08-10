@@ -1,11 +1,16 @@
-#pie-chart{
+#container{
   min-width: 310px; 
-  height: 400px; 
+  height: 300px; 
   max-width: 600px; 
   margin: 0 auto;
+  max-height: 300px;
 }  
 
 #table{
   width: 70vw;
   margin: 5vh auto;
+}
+
+.sentiment-average{
+  font-size: 2em;
 }
