@@ -1,0 +1,12 @@
+{
+  "name": "bot-data-vis",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --kill-others \"npm start --prefix DataApi\" \"npm start --prefix Client\""
+  },
+  "dependencies": {
+    "concurrently": "^3.6.1",
+    "react-router-dom": "^4.3.1"
+  }
+}
